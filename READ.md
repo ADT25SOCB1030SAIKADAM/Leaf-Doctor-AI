@@ -59,7 +59,16 @@ Leaf-Doctor-AI/
 
 ## 📸 Project Screenshots
 
-Screenshots of the website and disease detection results will be added here.
+## 📸 Website Screenshots
+
+### Homepage
+![Homepage](docs/screenshots/homepage.png)
+
+### Dashboard
+![Dashboard](docs/screenshots/dashboard.png)
+
+### Disease Detection
+![Detection](docs/screenshots/detection.png)
 
 ## 🌍 Sustainable Development Goals
 
