@@ -51,17 +51,27 @@ Leaf-Doctor-AI/
 ├── MODEL_CARD.md
 ├── Dockerfile
 └── README.md
-]## 📸 Project Screenshots
 
-### Homepage
-![Homepage](docs/screenshots/homepage.png)
+## 📸 Project Screenshots
 
-### Dashboard
-![Dashboard](docs/screenshots/dashboard.png)
+### 🏠 Homepage
+![Leaf Doctor AI Homepage](docs/screenshots/homepage.png)
 
-### Disease Detection
-![Detection](docs/screenshots/detection.png)
+### 📊 Dashboard
+![Leaf Doctor AI Dashboard](docs/screenshots/dashboard.png)
 
+### 🌿 Disease Detection
+![Leaf Doctor AI Detection](docs/screenshots/detection.png)
+
+## 👨‍💻 Project Team
+
+- Sai Kadam
+- Sharvan Kularkar
+- Ankita Potbhare
+- Prerna Patil
+
+**B.Tech Computer Science & Engineering – Semester III**  
+MIT Art, Design and Technology University
 
 
 🌍 Sustainable Development Goals
