@@ -1,8 +1,7 @@
 """Leaf Doctor backend: FastAPI + MobileNetV2 model. Serves the web/phone app and the JSON API.
 
 Settings come from environment variables (all optional):
-  ADMIN_KEY            secret needed for pump control and feedback summary (empty = open, for development)
-  SENSOR_KEY           secret the soil-sensor device must send (see sensor.py)
+  ADMIN_KEY            secret needed to read the feedback summary (empty = open, for development only)
   ALLOWED_ORIGINS      comma-separated list of other websites allowed to call the API (default: none)
   MAX_UPLOAD_MB        largest photo accepted (default 5)
   PREDICT_LIMIT_PER_MIN  photos per minute per visitor (default 20)
@@ -29,7 +28,6 @@ from pydantic import BaseModel, Field
 
 import feedback
 import guard
-from sensor import router as sensor_router
 
 BASE = os.path.dirname(os.path.abspath(__file__))
 FRONT = os.path.join(BASE, "frontend")
@@ -47,11 +45,11 @@ ADVICE = {
     "blight": "Remove affected leaves, avoid overhead watering, improve airflow, and use a suitable fungicide if it spreads.",
     "rust": "Remove infected leaves, avoid wetting foliage, and apply a rust-labelled fungicide.",
     "mildew": "Increase air circulation, reduce humidity, and apply sulfur or a mildew-specific fungicide.",
+    "mite": "Spray with water or neem oil/insecticidal soap and keep plants well watered.",
     "spot": "Prune infected leaves, water at the base of the plant, and rotate crops next season.",
     "scab": "Clear fallen leaves, prune for airflow, and apply fungicide early in the season.",
     "rot": "Remove infected parts, improve drainage, and avoid over-watering.",
     "virus": "No cure. Remove and destroy infected plants and control insects such as aphids and whiteflies.",
-    "mite": "Spray with water or neem oil/insecticidal soap and keep plants well watered.",
     "mold": "Reduce humidity, space plants out, and remove affected leaves.",
 }
 DEFAULT_ADVICE = "Isolate the plant, remove badly affected leaves, and consult a local agriculture expert."
@@ -98,7 +96,7 @@ async def lifespan(app):
     except Exception:
         log.exception("model failed to load")
     if not ADMIN_KEY:
-        log.warning("ADMIN_KEY is not set: pump control is open to everyone (fine for development only)")
+        log.warning("ADMIN_KEY is not set: the feedback summary is open to everyone (fine for development only)")
     yield
 
 
@@ -237,9 +235,6 @@ def feedback_summary(x_admin_key: Optional[str] = Header(None)):
     if not guard.key_ok(x_admin_key, ADMIN_KEY):
         raise HTTPException(401, "Admin key required.")
     return feedback.summary()
-
-
-app.include_router(sensor_router)   # soil sensor + pump API (/api/...)
 
 
 @app.get("/sw.js")
